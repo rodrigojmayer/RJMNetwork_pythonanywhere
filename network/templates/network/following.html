@@ -1,0 +1,104 @@
+{% extends "network/layout.html" %}
+{% load static %} 
+{% load network_extras %}
+
+{% block body %} 
+    <!-- <div id="new_post_view">
+        <h3></h3>}
+    </div>   -->
+    
+<h3>Following</h3>
+<!-- {{p_actual}}
+{{list_total_pages}} -->
+    <div id="all_posts_view">
+        
+        <div id="page_0">  
+            {% if all_posts_page %}    
+                {% for post in all_posts_page %} 
+                    <div id="posts_style">
+                        <div id="posts-flex-order">
+                            <div id="posts-flex-order-child1">
+                                {% if post.poster.header_image %}
+                                    <img class="posts_profile_picture" alt="Image not found" src="{{post.poster.header_image.url }}">
+                                {% else %}
+                                    <div class="no_profile_picture">
+                                        <svg id="dropbtn-profile" class="no_profile_picture_circle" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path id="dropbtn-profile" d="M40 20C40 31.0457 31.0457 40 20 40C8.95431 40 0 31.0457 0 20C0 8.9543 8.95431 0 20 0C31.0457 0 40 8.9543 40 20Z" fill="{{user_color|keyvalue:post.poster.id}}"/>
+                                        </svg>
+                                        <div  id="post_profile_letter" class="no_profile_picture_letter">
+                                            {{ post.poster|make_list|first|capfirst }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <!-- <svg id="dropbtn-profile" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path id="dropbtn-profile" d="M40 20C40 31.0457 31.0457 40 20 40C8.95431 40 0 31.0457 0 20C0 8.9543 8.95431 0 20 0C31.0457 0 40 8.9543 40 20Z" fill="#00BAAF"/>
+                                    <path id="dropbtn-profile" d="M10.42 25V14.35H14.83C15.29 14.35 15.71 14.445 16.09 14.635C16.48 14.825 16.815 15.085 17.095 15.415C17.375 15.735 17.595 16.095 17.755 16.495C17.915 16.885 17.995 17.285 17.995 17.695C17.995 18.275 17.865 18.825 17.605 19.345C17.355 19.855 17 20.27 16.54 20.59C16.08 20.91 15.54 21.07 14.92 21.07H11.47V25H10.42ZM11.47 20.14H14.875C15.295 20.14 15.66 20.025 15.97 19.795C16.28 19.565 16.52 19.265 16.69 18.895C16.86 18.525 16.945 18.125 16.945 17.695C16.945 17.255 16.845 16.85 16.645 16.48C16.445 16.11 16.18 15.82 15.85 15.61C15.53 15.39 15.175 15.28 14.785 15.28H11.47V20.14ZM19.541 25V17.185H20.561V25H19.541ZM19.541 15.55V14.05H20.561V15.55H19.541ZM26.1976 25.15C25.6276 25.15 25.1026 25.045 24.6226 24.835C24.1526 24.615 23.7376 24.315 23.3776 23.935C23.0276 23.555 22.7526 23.12 22.5526 22.63C22.3626 22.14 22.2676 21.62 22.2676 21.07C22.2676 20.33 22.4326 19.655 22.7626 19.045C23.0926 18.435 23.5526 17.95 24.1426 17.59C24.7326 17.23 25.4126 17.05 26.1826 17.05C26.9126 17.05 27.5576 17.22 28.1176 17.56C28.6776 17.89 29.0926 18.34 29.3626 18.91L28.3726 19.225C28.1526 18.825 27.8426 18.515 27.4426 18.295C27.0526 18.065 26.6176 17.95 26.1376 17.95C25.6176 17.95 25.1426 18.085 24.7126 18.355C24.2826 18.625 23.9376 18.995 23.6776 19.465C23.4276 19.935 23.3026 20.47 23.3026 21.07C23.3026 21.66 23.4326 22.195 23.6926 22.675C23.9526 23.155 24.2976 23.54 24.7276 23.83C25.1576 24.11 25.6326 24.25 26.1526 24.25C26.4926 24.25 26.8176 24.19 27.1276 24.07C27.4476 23.95 27.7226 23.79 27.9526 23.59C28.1926 23.38 28.3526 23.155 28.4326 22.915L29.4376 23.215C29.2976 23.585 29.0626 23.92 28.7326 24.22C28.4126 24.51 28.0326 24.74 27.5926 24.91C27.1626 25.07 26.6976 25.15 26.1976 25.15Z" fill="white"/>
+                                </svg> -->
+                            </div>
+                            <div id="posts-flex-order-child2">
+                                <div id="posts-first-line">
+                                    <a id="profile"  href="{% url 'postsbox' 'profile' ' ' post.poster.id 1 %}">{{ post.poster }}</a>
+                                    <div id="post-{{post.date_added}}" class="date_post"> {{ post.date_added }}</div>
+                                </div>
+                                <div id="post-description-{{post.id}}" class="description_post"> {{ post.description }} </div>
+                                {% if post.poster.id == user.id %}
+                                    <div id="edit" onclick="edit_field('{{ post.id }}')">Edit</div>
+                                {% else %}
+                                {% endif %}
+                                <textarea class="form-control mb-2" id="edit-box-{{post.id}}" name="edit-box" style="display:none;">{{ post.description }}</textarea>
+                                <div id="edit-btns">
+                                    <button id="edit-save-btn-{{post.id}}" class="btn btn-primary" style="display:none;"  onclick="save_edit('{{ post.id }}')">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="like_complete">
+                            {% if user.id in post.likers_id %}
+                                <button class="yes_button" id="like-btn-{{post.id}}" value="heart_full" onclick="like('{{ post.id }}')">
+                                    <svg id="heart-img-{{ post.id }}" alt="jacket" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M33.6751 7.9851C32.7561 7.05963 31.6632 6.32493 30.4593 5.82324C29.2555 5.32155 27.9643 5.06277 26.6601 5.06177C24.1931 5.06217 21.8162 5.98889 20 7.65843C18.1841 5.98861 15.8071 5.06185 13.34 5.06177C12.0343 5.06313 10.7417 5.3227 9.53661 5.82555C8.33155 6.3284 7.23783 7.06459 6.31838 7.99177C2.39672 11.9301 2.39838 18.0901 6.32172 22.0118L20 35.6901L33.6784 22.0118C37.6017 18.0901 37.6034 11.9301 33.6751 7.9851Z" fill="#DA2D57"/>
+                                    </svg>
+                                    <!-- <img src="{% static 'network/images/heart_full.jpg' %}" id="heart-img-{{ post.id }}" alt="jacket" width="25" > -->
+                                </button>   
+                            {% else %}
+                                <button class="yes_button" id="like-btn-{{post.id}}" value="heart_empty"  onclick="like('{{ post.id }}')">
+                                    <svg id="heart-img-{{ post.id }}" alt="jacket" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 7.65843C18.1841 5.98861 15.8071 5.06185 13.34 5.06177C12.0343 5.06313 10.7417 5.3227 9.53661 5.82555C8.33155 6.3284 7.23783 7.06459 6.31838 7.99177C2.39672 11.9301 2.39838 18.0901 6.32172 22.0118L18.5417 34.2318C18.825 34.7301 19.3717 35.0518 20 35.0518C20.258 35.0493 20.5119 34.9863 20.7411 34.8679C20.9704 34.7495 21.1686 34.579 21.32 34.3701L33.6784 22.0118C37.6017 18.0884 37.6017 11.9301 33.675 7.9851C32.7561 7.05963 31.6632 6.32493 30.4593 5.82324C29.2555 5.32155 27.9643 5.06277 26.66 5.06177C24.1931 5.06217 21.8162 5.98889 20 7.65843ZM31.3184 10.3418C33.9234 12.9601 33.925 17.0501 31.3217 19.6551L20 30.9768L8.67838 19.6551C6.07505 17.0501 6.07672 12.9601 8.67505 10.3484C9.94172 9.08843 11.5984 8.3951 13.34 8.3951C15.0817 8.3951 16.7317 9.08843 17.9884 10.3451L18.8217 11.1784C18.9764 11.3333 19.16 11.4562 19.3622 11.5401C19.5644 11.6239 19.7812 11.6671 20 11.6671C20.2189 11.6671 20.4357 11.6239 20.6379 11.5401C20.8401 11.4562 21.0237 11.3333 21.1784 11.1784L22.0117 10.3451C24.5317 7.8301 28.8017 7.83677 31.3184 10.3418Z" fill="#3D3D3D"/>
+                                    </svg>
+                                    <!-- <img src="{% static 'network/images/heart_empty.jpg' %}" id="heart-img-{{ post.id }}" alt="jacket" width="25" > -->
+                                </button>
+                            {% endif %}
+                            <div id="like-count-{{post.id}}" class="d-inline-block">{{post.number_likes}} </div> <div>likes</div>
+                        </div>
+                        <div>{{ post.timestamp }}</div>
+                    </div>
+                {% endfor %}
+                <div id="id_page_buttons">
+                    <!-- <button id="selected_button" class="no-button" > 1 </button> -->
+                    <!-- <button id="selected_button" class="page_button" > 1 </button> -->
+                    {% if list_total_pages %}
+                        {% if p_actual == 1 %}
+                        {% else %}    
+                            <button class="page_button page_button_large" onclick="pages('{{user.id}}', '{{p_actual}}', -1)">Prev page</button>  
+                        {% endif %}
+                        {% for page in list_total_pages %}
+                            {% if page == p_actual %}
+                                <button id="selected_button" class="page_button" > {{ p_actual }} </button>
+                            {% else %}
+                                <button class="page_button"  id="not_selected_button" onclick="pages('{{user.id}}', '{{page}}', 0)">{{page}}</button>
+                            {% endif %}
+                        {% endfor %}
+                        {% if p_actual == p_last %}
+                            <!-- <button id="selected_button"  class="page_button">Next page</button>   -->
+                        {% else %}
+                            <button class="page_button page_button_large" onclick="pages('{{user.id}}', '{{p_actual}}', +1)">Next page</button>   
+                        {% endif %}  
+                    {% endif %}  
+                </div>
+            {% else %}
+                <li>no post</li>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %} 
+

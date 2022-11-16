@@ -1,0 +1,24 @@
+{% extends "network/index.html" %}
+{% load static %}
+{% load network_extras %}
+{% block page_buttons %}
+    <div id="id_page_buttons">
+        {% if list_total_pages %}
+            {% if p_actual == 1 %}
+            {% else %}
+                <button class="page_button page_button_large" onclick="pages('{{user.id}}', '{{p_actual}}', -1)">Prev page</button>  
+            {% endif %}
+            {% for page in list_total_pages %} 
+                {% if page == p_actual %}
+                    <button id="selected_button" class="page_button" > {{ p_actual }} </button>
+                {% else %}
+                    <button class="page_button"  id="not_selected_button" onclick="pages('{{user.id}}', '{{page}}', 0)">{{page}}</button>
+                {% endif %}
+            {% endfor %}
+            {% if p_actual == p_last %}
+            {% else %}
+                <button class="page_button page_button_large" onclick="pages('{{user.id}}', '{{p_actual}}', +1)">Next page</button>  
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
