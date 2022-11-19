@@ -160,5 +160,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 cloudinary.config( 
   cloud_name = "hmljypbcs", 
   api_key = "296567633364967", 
-  api_secret = "HKB-zS7lLd5vLL_DCGGYrBrTu-M" 
+  api_secret = "HKB-zS7lLd5vLL_DCGGYrBrTu-M", 
+  api_proxy = 'http://proxy.server:3128'
 )
+
+import cloudinary.uploader
+import cloudinary.api
